@@ -21,6 +21,6 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
-  Route.put('/register/:id', 'UsersController.register')
+  Route.put('/register', 'UsersController.register')
   Route.put('/check', 'UsersController.check')
 }).prefix('/api')

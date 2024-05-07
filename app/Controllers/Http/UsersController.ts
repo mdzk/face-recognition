@@ -4,7 +4,7 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Database from '@ioc:Adonis/Lucid/Database'
 import FaceApi from 'App/Services/FaceApi'
 import Drive from '@ioc:Adonis/Core/Drive'
-import Face from 'App/Models/Face'
+import Face from 'App/Models/Face' // Assuming Face model is defined elsewhere
 import { cuid } from '@ioc:Adonis/Core/Helpers'
 import { DateTime } from 'luxon'
 
@@ -12,12 +12,19 @@ export default class UsersController {
   public async register({ request, response }: HttpContextContract) {
     const { face, userId } = await request.validate({
       schema: schema.create({
-        userId: schema.number(),
+        userId: schema.string([rules.uuid()]),
         face: schema.file({
           extnames: ['jpg', 'png'],
         }),
       }),
     })
+
+    const hasFace = await FaceApi.tranformToDescriptor(face.tmpPath!)
+    if (!hasFace) {
+      return response.unprocessableEntity({
+        message: 'Uploaded file does not contain a face',
+      })
+    }
 
     const faceDescriptor = await FaceApi.tranformToDescriptor(face.tmpPath!)
     if (!faceDescriptor) return response.unprocessableEntity()
@@ -34,7 +41,7 @@ export default class UsersController {
     return await Database.transaction(async (trx) => {
       const faceModel = await Face.updateOrCreate(
         {
-          userId: userId,
+          userId,
         },
         {
           file: faceFile,
@@ -56,12 +63,12 @@ export default class UsersController {
         face: schema.file({
           extnames: ['jpg', 'png'],
         }),
-        userId: schema.number(),
+        userId: schema.string([rules.uuid()]),
       }),
     })
 
     try {
-      const userFace = await Face.find(userId)
+      const userFace = await Face.findBy('userId', userId)
       if (!userFace) {
         throw new Error('Face model not registered yet')
       }
@@ -79,7 +86,6 @@ export default class UsersController {
         throw new Error('Face not match')
       }
 
-      // No need to save attendance data for verification only
       return { message: 'Face verification successful!' }
     } catch (e) {
       return response.unprocessableEntity({

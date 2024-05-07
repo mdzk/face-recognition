@@ -7,7 +7,7 @@ export default class Face extends BaseModel {
   public id: number
 
   @column()
-  public userId: number
+  public userId: string
 
   @attachment()
   public file: AttachmentContract
