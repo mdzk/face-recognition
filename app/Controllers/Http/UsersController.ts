@@ -21,7 +21,7 @@ export default class UsersController {
     const hasFace = await FaceApi.tranformToDescriptor(face.tmpPath!)
     if (!hasFace) {
       return response.unprocessableEntity({
-        message: 'Uploaded file does not contain a face',
+        message: 'File yang diunggah tidak mengandung wajah',
       })
     }
 
@@ -60,7 +60,7 @@ export default class UsersController {
     const { face, userId } = await request.validate({
       schema: schema.create({
         face: schema.file({
-          extnames: ['jpg', 'png'],
+          extnames: ['jpg', 'png', 'jpeg'],
         }),
         userId: schema.string([rules.uuid()]),
       }),
@@ -69,7 +69,7 @@ export default class UsersController {
     try {
       const userFace = await Face.findBy('userId', userId)
       if (!userFace) {
-        throw new Error('Face model not registered yet')
+        throw new Error('Wajah belum didaftarkan')
       }
 
       const faceRef = FaceApi.loadFromString(
@@ -78,11 +78,11 @@ export default class UsersController {
       const faceQuery = (await FaceApi.tranformToDescriptor(face.tmpPath!))?.descriptor
 
       if (!faceQuery) {
-        throw new Error('Face not detected')
+        throw new Error('Wajah tidak terdeteksi')
       }
 
       if (!FaceApi.matcher(faceRef, faceQuery)) {
-        throw new Error('Face not match')
+        throw new Error('Wajah tidak cocok')
       }
 
       return response.json({
