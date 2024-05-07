@@ -13,7 +13,7 @@ export default class UsersController {
       schema: schema.create({
         userId: schema.string([rules.uuid()]),
         face: schema.file({
-          extnames: ['jpg', 'png'],
+          extnames: ['jpg', 'png', 'jpeg'],
         }),
       }),
     })
@@ -85,7 +85,9 @@ export default class UsersController {
         throw new Error('Face not match')
       }
 
-      return { message: 'Face verification successful!' }
+      return response.accepted({
+        message: 'Face verification successful!',
+      })
     } catch (e) {
       return response.unprocessableEntity({
         message: (e as Error).message,
