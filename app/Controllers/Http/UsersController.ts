@@ -6,7 +6,6 @@ import FaceApi from 'App/Services/FaceApi'
 import Drive from '@ioc:Adonis/Core/Drive'
 import Face from 'App/Models/Face' // Assuming Face model is defined elsewhere
 import { cuid } from '@ioc:Adonis/Core/Helpers'
-import { DateTime } from 'luxon'
 
 export default class UsersController {
   public async register({ request, response }: HttpContextContract) {

@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 import { AttachmentContract, attachment } from '@ioc:Adonis/Addons/AttachmentLite'
 
 export default class Face extends BaseModel {
