@@ -20,6 +20,9 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+Route.get('/', function () {
+  return 'connected'
+})
 Route.group(() => {
   Route.put('/register', 'UsersController.register')
   Route.put('/check', 'UsersController.check')
