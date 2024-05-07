@@ -85,7 +85,7 @@ export default class UsersController {
         throw new Error('Face not match')
       }
 
-      return response.accepted({
+      return response.json({
         message: 'Face verification successful!',
       })
     } catch (e) {
