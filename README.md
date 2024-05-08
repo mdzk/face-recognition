@@ -36,23 +36,23 @@ npm run dev
 #### Register Face
 
 ```http
-  PUT /api/register
+PUT /api/register
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `userId` | `uuid` | **Required**. Id of item to create or update |
+| `userId` | `string` | **Required**. UUID of item to create or update |
 | `face` | `file` | **Required**. Image file |
 
 #### Check Face
 
 ```http
-  PUT /api/check
+PUT /api/check
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `userId` | `uuid` | **Required**. Id of item to create or update |
+| `userId` | `string` | **Required**. UUID of item to create or update |
 | `face` | `file` | **Required**. Image file |
 
 
