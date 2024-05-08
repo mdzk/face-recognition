@@ -72,7 +72,9 @@ export default class UsersController {
     try {
       const userFace = await Face.findBy('userId', userId)
       if (!userFace) {
-        throw new Error('Wajah belum didaftarkan')
+        return response.json({
+          message: "Wajah belum didaftarkan"
+        })
       }
 
       const faceRef = FaceApi.loadFromString(
@@ -81,11 +83,15 @@ export default class UsersController {
       const faceQuery = (await FaceApi.tranformToDescriptor(face.tmpPath!))?.descriptor
 
       if (!faceQuery) {
-        throw new Error('Wajah tidak terdeteksi')
+        return response.json({
+          message: "Wajah tidak terdeteksi"
+        })
       }
 
       if (!FaceApi.matcher(faceRef, faceQuery)) {
-        throw new Error('Wajah tidak cocok')
+        return response.json({
+          message: "Wajah tidak cocok"
+        })
       }
 
       return response.json({
