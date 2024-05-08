@@ -52,7 +52,10 @@ export default class UsersController {
 
       await Drive.put(faceFile.name, faceDescriptor.toString())
 
-      return faceModel.serialize()
+      return response.accepted({
+        success: true,
+        message: "Registrasi wajah berhasil!"
+      })
     })
   }
 
